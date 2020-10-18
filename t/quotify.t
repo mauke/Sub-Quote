@@ -247,7 +247,13 @@ for my $value (_uniq @quotify) {
 
     if (defined $value) {
       cmp_ok $check_value, 'eq', $value,
-        "$value_name: string value maintained$suffix";
+        "$value_name: string value maintained$suffix" or do {
+          use Devel::Peek;
+          warn "got:\n";
+          Dump($check_value);
+          warn "expected:\n";
+          Dump($value);
+        };
     }
     else {
       is $check_value, undef,
